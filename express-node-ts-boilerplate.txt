@@ -1,0 +1,58 @@
+/* 
+--src
+--public
+--package.json
+--tsconfig
+
+**************  app.ts  **************
+1. import express, {Application}
+2. define APP class:
+    -- app of type Application
+    -- port of type number 
+    -- constructor (port, controllers)
+        -- set port
+        -- set app as express ()
+        -- init middlewares
+        -- init controllers
+    -- initMiddlewares()
+        body parse
+        cors
+    -- initControllers*()
+        loop thru all controllers
+        app.use('/',controller.router)
+
+    -- app.listen 
+
+**************  server.ts  **************
+1. import app, controllers
+2. instantiate new App - 
+    a. params: ([controllers], port number)
+    b. call app.listen
+
+
+**************  controllers.ts  **************
+1. import express, {Request, Response, Router}
+2. define the named controller class
+        router : Router = express.Router()
+        path : string = "/xxx"
+        data: 
+        constructor: ()
+            initRouter()
+
+        initRouter(){
+            router.get(path, (req, res) =>{
+                send data
+            })
+            router.post(path, (req, res) =>{
+                read body, 
+                save it
+                response
+            })
+            ....other verbs
+        }
+
+**************  interfaces.ts  **************
+1. define interfaces for entities
+
+*/
+
