@@ -4,8 +4,8 @@ WORKDIR /opt/app
 COPY package.json package-lock.json .
 RUN npm install
 COPY public/ .
-EXPOSE 5500
+EXPOSE 8000
 CMD [ "npm", "start"]
 
-//docker build . -t team-management
-//docker run -it -p 8000:8000 express-ts
+#docker build . -t team-management
+#docker run -it -p 8000:8000 team-management
