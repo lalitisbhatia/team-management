@@ -7,7 +7,7 @@ const app:App = new App(
         new PlayersController(),
         new TeamsController()
     ], 
-    5500
+    8000
     )
 
 app.listen();

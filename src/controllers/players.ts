@@ -13,12 +13,12 @@ class PlayersController {
       }
      
       public intializeRoutes() {
-        this.router.get('/', this.getAllPosts);
-        this.router.get(this.path, this.getAllPosts);
-        this.router.post(this.path, this.createAPost); 
+        this.router.get('/', this.getAllPlayers);
+        this.router.get(this.path, this.getAllPlayers);
+        this.router.post(this.path, this.createPlayer); 
       }
      
-      getAllPosts = (request: express.Request, response: express.Response) => {
+      getAllPlayers = (request: express.Request, response: express.Response) => {
         try{
             response.status(200).json(this.players);
         }catch(err){
@@ -27,7 +27,7 @@ class PlayersController {
         
       }
      
-      createAPost = (request: express.Request, response: express.Response) => {
+      createPlayer = (request: express.Request, response: express.Response) => {
         try{
             const player: Player = request.body;
             this.players.push(player);

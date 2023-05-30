@@ -6,3 +6,6 @@ RUN npm install
 COPY public/ .
 EXPOSE 5500
 CMD [ "npm", "start"]
+
+//docker build . -t team-management
+//docker run -it -p 8000:8000 express-ts

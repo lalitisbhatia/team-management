@@ -9,5 +9,5 @@ const teams_1 = __importDefault(require("./controllers/teams"));
 const app = new app_1.default([
     new players_1.default(),
     new teams_1.default()
-], 5500);
+], 8000);
 app.listen();

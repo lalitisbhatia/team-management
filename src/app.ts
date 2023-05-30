@@ -1,6 +1,7 @@
 import express , { Application,Request,Response,Router } from "express";
 import bodyParser  from "body-parser";
-
+import mongoose from "mongoose";
+require("dotenv").config(); 
 
 class App {
     public app: express.Application;
@@ -8,7 +9,6 @@ class App {
     // public router;
     constructor(controllers:any,port:number){
         this.app = express();
-        // this.router = Router();
         this.port = port;
         this.initializeMiddlewares();
         this.initializeControllers(controllers)
@@ -20,7 +20,6 @@ class App {
 
     private initializeControllers = ((controllers: any) => {
         controllers.forEach((controller: any) =>{
-            // console.log(controller) 
             this.app.use('/',controller.router)
         })
     })
@@ -31,6 +30,16 @@ class App {
             console.log(`App listening on port ${this.port}`)
         })
     }
+
+    // public connectDB = () => {
+    //     mongoose.connect(
+    //         process.env.MONGODB_URI, 
+    //         {
+    //             useNewUrlParser: true,
+    //             useUnifiedTopology: true
+    //         }
+    //     );
+    // }
    }
 
    export default App

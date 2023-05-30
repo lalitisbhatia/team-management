@@ -10,7 +10,7 @@ class PlayersController {
         this.path = '/players';
         this.router = express_1.default.Router();
         this.players = players_1.default;
-        this.getAllPosts = (request, response) => {
+        this.getAllPlayers = (request, response) => {
             try {
                 response.status(200).json(this.players);
             }
@@ -18,7 +18,7 @@ class PlayersController {
                 response.status(500).json({ error: err });
             }
         };
-        this.createAPost = (request, response) => {
+        this.createPlayer = (request, response) => {
             try {
                 const player = request.body;
                 this.players.push(player);
@@ -31,9 +31,9 @@ class PlayersController {
         this.intializeRoutes();
     }
     intializeRoutes() {
-        this.router.get('/', this.getAllPosts);
-        this.router.get(this.path, this.getAllPosts);
-        this.router.post(this.path, this.createAPost);
+        this.router.get('/', this.getAllPlayers);
+        this.router.get(this.path, this.getAllPlayers);
+        this.router.post(this.path, this.createPlayer);
     }
 }
 exports.default = PlayersController;
