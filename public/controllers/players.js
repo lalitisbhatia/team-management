@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const players_1 = __importDefault(require("../data/players"));
+const models_1 = __importDefault(require("../interfaces/models"));
 class PlayersController {
     constructor() {
         this.path = '/players';
@@ -12,7 +13,9 @@ class PlayersController {
         this.players = players_1.default;
         this.getAllPlayers = (request, response) => {
             try {
-                response.status(200).json(this.players);
+                models_1.default.find().then(allPLayers => {
+                    response.status(200).json(allPLayers);
+                });
             }
             catch (err) {
                 response.status(500).json({ error: err });
@@ -21,8 +24,10 @@ class PlayersController {
         this.createPlayer = (request, response) => {
             try {
                 const player = request.body;
-                this.players.push(player);
-                response.status(200).json(player);
+                const createdPlayer = new models_1.default(player);
+                createdPlayer.save().then(savedPlayer => {
+                    response.status(200).json(savedPlayer);
+                });
             }
             catch (err) {
                 response.status(500).json({ error: err });

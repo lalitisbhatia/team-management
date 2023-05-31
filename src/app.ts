@@ -11,6 +11,7 @@ class App {
         this.app = express();
         this.port = port;
         this.initializeMiddlewares();
+        this.initializeDBConnection();
         this.initializeControllers(controllers)
     }
 
@@ -31,15 +32,14 @@ class App {
         })
     }
 
-    // public connectDB = () => {
-    //     mongoose.connect(
-    //         process.env.MONGODB_URI, 
-    //         {
-    //             useNewUrlParser: true,
-    //             useUnifiedTopology: true
-    //         }
-    //     );
-    // }
+    private initializeDBConnection = () => {
+        mongoose.connect('mongodb://tm-db-user:tmdbu$3r@team-management:27017/team-management');
+        const db = mongoose.connection;
+        db.on("error", console.error.bind(console, "connection error: "));
+        db.once("open", function () {
+          console.log("Connected successfully");
+        });
+    }
    }
 
    export default App

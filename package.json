@@ -7,7 +7,9 @@
     "build": "npx tsc",
     "start": "node server.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q public/server.js\"",
-    "test": "jest"
+    "test": "jest",
+    "docker:build": "npx tsc && docker build . -t team-management-service && docker rm -f team-management-service && docker run -d -it  -p 8000:8000 --name team-management-service team-management-service && docker network connect local-network team-management-service",
+    "docker:run": "docker run -it  -p 8000:8000 --name team-management-service team-management-service"
   },
   "author": "Lalit Bhatia",
   "license": "ISC",

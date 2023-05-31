@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
+const mongoose_1 = __importDefault(require("mongoose"));
 require("dotenv").config();
 class App {
     // public router;
@@ -22,9 +23,18 @@ class App {
                 console.log(`App listening on port ${this.port}`);
             });
         };
+        this.initializeDBConnection = () => {
+            mongoose_1.default.connect('mongodb://tm-db-user:tmdbu$3r@team-management:27017/team-management');
+            const db = mongoose_1.default.connection;
+            db.on("error", console.error.bind(console, "connection error: "));
+            db.once("open", function () {
+                console.log("Connected successfully");
+            });
+        };
         this.app = (0, express_1.default)();
         this.port = port;
         this.initializeMiddlewares();
+        this.initializeDBConnection();
         this.initializeControllers(controllers);
     }
 }

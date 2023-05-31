@@ -1,6 +1,7 @@
 import express, {Request,Response} from 'express';
 import Player from '../interfaces/player'
 import players from "../data/players"
+import playerModel from "../interfaces/models"
 
 class PlayersController {
     public path = '/players';
@@ -20,7 +21,10 @@ class PlayersController {
      
       getAllPlayers = (request: express.Request, response: express.Response) => {
         try{
-            response.status(200).json(this.players);
+            playerModel.find().then(allPLayers =>{
+              response.status(200).json(allPLayers);
+            })
+            
         }catch(err){
             response.status(500).json({error:err})
         }
@@ -30,8 +34,11 @@ class PlayersController {
       createPlayer = (request: express.Request, response: express.Response) => {
         try{
             const player: Player = request.body;
-            this.players.push(player);
-            response.status(200).json(player);
+            const createdPlayer = new playerModel(player)
+            createdPlayer.save().then(savedPlayer => {
+              response.status(200).json(savedPlayer);
+            })
+            
         }catch(err){
             response.status(500).json({error:err})
         }
