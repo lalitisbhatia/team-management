@@ -24,7 +24,7 @@ class App {
             });
         };
         this.initializeDBConnection = () => {
-            mongoose_1.default.connect('mongodb://tm-db-user:tmdbu$3r@team-management:27017/team-management');
+            mongoose_1.default.connect(`${process.env.TM_DB_CONNECTION}`);
             const db = mongoose_1.default.connection;
             db.on("error", console.error.bind(console, "connection error: "));
             db.once("open", function () {

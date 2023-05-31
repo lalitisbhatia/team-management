@@ -33,7 +33,7 @@ class App {
     }
 
     private initializeDBConnection = () => {
-        mongoose.connect('mongodb://tm-db-user:tmdbu$3r@team-management:27017/team-management');
+        mongoose.connect(`${process.env.TM_DB_CONNECTION}`);
         const db = mongoose.connection;
         db.on("error", console.error.bind(console, "connection error: "));
         db.once("open", function () {
