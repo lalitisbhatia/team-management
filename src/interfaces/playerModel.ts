@@ -12,3 +12,4 @@ const playerSchema = new mongoose.Schema({
 const playerModel = mongoose.model<Player & mongoose.Document>('Player', playerSchema);
  
 export default playerModel;
+// module.exports = playerModel;

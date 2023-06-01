@@ -1,6 +1,7 @@
 import express , { Application,Request,Response,Router } from "express";
 import bodyParser  from "body-parser";
 import mongoose from "mongoose";
+
 require("dotenv").config(); 
 
 class App {

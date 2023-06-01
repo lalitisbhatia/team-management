@@ -1,7 +1,7 @@
 interface Team {
     name:string;
     location: string;
-    id: string;
+    ccid: string;
     leagues: string[]
 }
 

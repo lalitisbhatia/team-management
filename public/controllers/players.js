@@ -4,17 +4,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const players_1 = __importDefault(require("../data/players"));
-const models_1 = __importDefault(require("../interfaces/models"));
+const playerModel_1 = __importDefault(require("../interfaces/playerModel"));
 class PlayersController {
     constructor() {
         this.path = '/players';
         this.router = express_1.default.Router();
-        this.players = players_1.default;
         this.getAllPlayers = (request, response) => {
             try {
-                models_1.default.find().then(allPLayers => {
+                playerModel_1.default.find().then(allPLayers => {
                     response.status(200).json(allPLayers);
+                });
+            }
+            catch (err) {
+                response.status(500).json({ error: err });
+            }
+        };
+        this.getPlayer = (request, response) => {
+            try {
+                playerModel_1.default.findOne({ _id: request.params.id }).then(player => {
+                    response.status(200).json(player);
                 });
             }
             catch (err) {
@@ -24,9 +32,20 @@ class PlayersController {
         this.createPlayer = (request, response) => {
             try {
                 const player = request.body;
-                const createdPlayer = new models_1.default(player);
+                const createdPlayer = new playerModel_1.default(player);
                 createdPlayer.save().then(savedPlayer => {
                     response.status(200).json(savedPlayer);
+                });
+            }
+            catch (err) {
+                response.status(500).json({ error: err });
+            }
+        };
+        this.updatePlayer = (request, response) => {
+            try {
+                const player = request.body;
+                playerModel_1.default.findByIdAndUpdate(request.params.id, player).then((updatedPlayer) => {
+                    response.status(201).json(updatedPlayer);
                 });
             }
             catch (err) {
@@ -38,7 +57,9 @@ class PlayersController {
     intializeRoutes() {
         this.router.get('/', this.getAllPlayers);
         this.router.get(this.path, this.getAllPlayers);
+        this.router.get(`${this.path}/:id`, this.getPlayer);
         this.router.post(this.path, this.createPlayer);
+        this.router.put(`${this.path}/:id`, this.updatePlayer);
     }
 }
 exports.default = PlayersController;

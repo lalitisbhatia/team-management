@@ -4,7 +4,7 @@ let teams = [
     {
         name: "Legions",
         location: "NJ",
-        id: "111-fggf-3434-gfgf",
+        ccid: "111-fggf-3434-gfgf",
         leagues: ["CLNJ"]
     }
 ];
