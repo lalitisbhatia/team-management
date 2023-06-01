@@ -1,0 +1,15 @@
+backend for a lib
+user model:
+
+
+book model: 
+    {
+        "title": 
+    }
+
+add/find/update/delete books to the library
+list/
+
+
+5 copis of the sam book 
+5 people checkingit out 

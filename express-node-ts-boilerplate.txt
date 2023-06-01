@@ -15,7 +15,7 @@
         -- init middlewares
         -- init controllers
     -- initMiddlewares()
-        body parse
+        body parser
         cors
     -- initControllers*()
         loop thru all controllers

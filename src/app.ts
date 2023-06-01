@@ -1,6 +1,8 @@
 import express , { Application,Request,Response,Router } from "express";
 import bodyParser  from "body-parser";
+import mongoose from "mongoose";
 
+require("dotenv").config(); 
 
 class App {
     public app: express.Application;
@@ -8,9 +10,9 @@ class App {
     // public router;
     constructor(controllers:any,port:number){
         this.app = express();
-        // this.router = Router();
         this.port = port;
         this.initializeMiddlewares();
+        this.initializeDBConnection();
         this.initializeControllers(controllers)
     }
 
@@ -20,7 +22,6 @@ class App {
 
     private initializeControllers = ((controllers: any) => {
         controllers.forEach((controller: any) =>{
-            // console.log(controller) 
             this.app.use('/',controller.router)
         })
     })
@@ -30,6 +31,15 @@ class App {
         this.app.listen(this.port,()=> {
             console.log(`App listening on port ${this.port}`)
         })
+    }
+
+    private initializeDBConnection = () => {
+        mongoose.connect(`${process.env.TM_DB_CONNECTION}`);
+        const db = mongoose.connection;
+        db.on("error", console.error.bind(console, "connection error: "));
+        db.once("open", function () {
+          console.log("Connected successfully");
+        });
     }
    }
 

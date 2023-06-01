@@ -1,13 +1,14 @@
 import express ,{Request,Response} from 'express'
 import Team from '../interfaces/team'
 import teams from "../data/teams"
+import teamModel from "../interfaces/teamModel";
 
 
 class TeamsController {
     public path = "/teams";
     public router = express.Router();
     
-    private Teams: Team[] = teams;
+    // private Teams: Team[] = teams;
     
     constructor() {
         this.initializeRoutes()
@@ -21,7 +22,9 @@ class TeamsController {
 
     private getAllTeams = (request:Request,response:Response) =>{
         try{
-            response.status(200).json(this.Teams);
+            teamModel.find().then(allTeams =>{
+                response.status(200).json(allTeams);
+            })
         }catch(err){
             response.status(500).json({error:err});
         }
@@ -29,9 +32,12 @@ class TeamsController {
 
     private createTeam = (request:Request,response:Response) =>{
         try{
-            const team:Team = request.body;
-            teams.push(team)
-            response.status(201).json(team)    
+            const team: Team = request.body;
+            const createdTeam = new teamModel(team);
+            createdTeam.save().then(savedTeam =>{
+                response.status(201).json(savedTeam)   
+            })
+             
         }catch(err){
             response.status(500).json({error:err});
         }
