@@ -5,10 +5,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const playerModel_1 = __importDefault(require("../interfaces/playerModel"));
-class PlayersController {
+const baseController_1 = __importDefault(require("./baseController"));
+class PlayersController extends baseController_1.default {
     constructor() {
+        super();
         this.path = '/players';
         this.router = express_1.default.Router();
+        this.initRoutes = () => {
+            this.router.get('/', this.getHP);
+            this.router.get(this.path, this.getAllPlayers);
+            this.router.get(`${this.path}/:id`, this.getPlayer);
+            this.router.post(this.path, this.createPlayer);
+            this.router.put(`${this.path}/:id`, this.updatePlayer);
+        };
         this.getAllPlayers = (request, response) => {
             try {
                 playerModel_1.default.find().then(allPLayers => {
@@ -52,14 +61,11 @@ class PlayersController {
                 response.status(500).json({ error: err });
             }
         };
-        this.intializeRoutes();
+        this.path = '/players';
+        this.initRoutes();
     }
-    intializeRoutes() {
-        this.router.get('/', this.getAllPlayers);
-        this.router.get(this.path, this.getAllPlayers);
-        this.router.get(`${this.path}/:id`, this.getPlayer);
-        this.router.post(this.path, this.createPlayer);
-        this.router.put(`${this.path}/:id`, this.updatePlayer);
+    getHP(req, res) {
+        res.status(200).json({ message: "welcome" });
     }
 }
 exports.default = PlayersController;

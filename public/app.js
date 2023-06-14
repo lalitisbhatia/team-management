@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const mongoose_1 = __importDefault(require("mongoose"));
+const envHelper_1 = require("./utils/envHelper");
 require("dotenv").config();
 class App {
-    // public router;
     constructor(controllers, port) {
         this.initializeMiddlewares = () => {
             this.app.use(body_parser_1.default.json());
@@ -24,7 +24,7 @@ class App {
             });
         };
         this.initializeDBConnection = () => {
-            mongoose_1.default.connect(`${process.env.TM_DB_CONNECTION}`);
+            mongoose_1.default.connect(`${(0, envHelper_1.getDBCONN)()}`);
             const db = mongoose_1.default.connection;
             db.on("error", console.error.bind(console, "connection error: "));
             db.once("open", function () {

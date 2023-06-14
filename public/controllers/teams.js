@@ -3,14 +3,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
 const teamModel_1 = __importDefault(require("../interfaces/teamModel"));
-class TeamsController {
+const baseController_1 = __importDefault(require("./baseController"));
+class TeamsController extends baseController_1.default {
+    // public path = "/teams";
+    // public router = express.Router();
     // private Teams: Team[] = teams;
     constructor() {
-        this.path = "/teams";
-        this.router = express_1.default.Router();
-        this.initializeRoutes = () => {
+        super();
+        this.initRoutes = () => {
             this.router.get(this.path || "/", this.getAllTeams);
             this.router.post(this.path, this.createTeam);
         };
@@ -36,7 +37,8 @@ class TeamsController {
                 response.status(500).json({ error: err });
             }
         };
-        this.initializeRoutes();
+        this.path = "/teams";
+        this.initRoutes();
     }
 }
 exports.default = TeamsController;

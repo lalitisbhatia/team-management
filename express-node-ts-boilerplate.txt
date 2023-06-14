@@ -4,30 +4,75 @@
 --package.json
 --tsconfig
 
+packages to install
+    npm install typescript express ts-node  @types/express   body-parser 
+    npm install --save-dev @types/express @types/node concurrently nodemon jest 
+
+    "devDependencies": {
+        "@types/express": "^4.17.17",
+        "@types/node": "^20.1.0",
+        "concurrently": "^8.0.1",
+        "jest": "^29.5.0",
+        "nodemon": "^2.0.22",
+        "supertest": "^6.3.3",
+        "typescript": "^5.0.4"
+    },
+  "dependencies": {
+    "body-parse": "^0.1.0",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongodb": "^5.5.0",
+    "mongoose": "^7.1.0"
+  },
+
+
+    
+-- run tsc --init
+-- update tsc.config:
+    -  add " "include": ["src/*.*","src/data"]"   at the editing
+    - "outDir": "./public",
+    - "rootDir": "./src",
+    - "target": "ES6",
+
 **************  app.ts  **************
 1. import express, {Application}
 2. define APP class:
+    //Public Props
     -- app of type Application
     -- port of type number 
     -- constructor (port, controllers)
-        -- set port
-        -- set app as express ()
-        -- init middlewares
-        -- init controllers
+        this.app = express();
+        this.port = port;
+        this.initializeMiddlewares();
+        this.initializeDBConnection();
+        this.initializeControllers(controllers)
+
     -- initMiddlewares()
         body parser
         cors
-    -- initControllers*()
+    -- initControllers(controllers)
         loop thru all controllers
         app.use('/',controller.router)
+    -- initDbConection () => {
+            mongoose.connect(`${process.env.TM_DB_CONNECTION}`);
+            const db = mongoose.connection;
+            db.on("error", console.error.bind(console, "connection error: "));
+            db.once("open", function () {
+            console.log("Connected successfully");
+            });
+    }
 
-    -- app.listen 
+    -- listen ()
+        this.app.listen(this.port,()=> {
+            console.log(`App listening on port ${this.port}`)
+        })
 
 **************  server.ts  **************
 1. import app, controllers
 2. instantiate new App - 
-    a. params: ([controllers], port number)
-    b. call app.listen
+    a. params: ([new controller()], port number)
+    b. call app.listen()
 
 
 **************  controllers.ts  **************
@@ -37,9 +82,9 @@
         path : string = "/xxx"
         data: 
         constructor: ()
-            initRouter()
+            this.intializeRoutes();
 
-        initRouter(){
+        intializeRoutes(){
             router.get(path, (req, res) =>{
                 send data
             })
@@ -50,6 +95,7 @@
             })
             ....other verbs
         }
+
 
 **************  interfaces.ts  **************
 1. define interfaces for entities

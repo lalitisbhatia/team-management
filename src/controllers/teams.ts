@@ -2,20 +2,22 @@ import express ,{Request,Response} from 'express'
 import Team from '../interfaces/team'
 import teams from "../data/teams"
 import teamModel from "../interfaces/teamModel";
+import BaseController from './baseController';
 
-
-class TeamsController {
-    public path = "/teams";
-    public router = express.Router();
+class TeamsController extends BaseController{
+    // public path = "/teams";
+    // public router = express.Router();
     
     // private Teams: Team[] = teams;
     
     constructor() {
-        this.initializeRoutes()
+        super()
+        this.path = "/teams";
+        this.initRoutes()
     }
 
     
-    private initializeRoutes = ()=>{
+    initRoutes = ()=>{
         this.router.get(this.path||"/",this.getAllTeams)
         this.router.post(this.path,this.createTeam)
     }
