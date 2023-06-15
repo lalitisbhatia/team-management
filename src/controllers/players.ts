@@ -1,24 +1,29 @@
-import express, {Request,Response} from 'express';
+import  {Request,Response} from 'express';
 import Player from '../interfaces/player'
 import playerModel from "../interfaces/playerModel"
+import BaseController from "./baseController"
 
-class PlayersController {
-    public path = '/players';
-    public router = express.Router();
-
+class PlayersController extends BaseController{
+    
     constructor() {
-        this.intializeRoutes();
+        super();
+        this.path = '/players';        
+        this.initRoutes()
       }
      
-      public intializeRoutes() {
-        this.router.get('/', this.getAllPlayers);
+      initRoutes = () => {        
+        this.router.get('/', this.getHP);
         this.router.get(this.path, this.getAllPlayers);
         this.router.get(`${this.path}/:id`, this.getPlayer);
         this.router.post(this.path, this.createPlayer); 
         this.router.put(`${this.path}/:id`, this.updatePlayer); 
       }
+
+      private getHP(req:Request, res:Response) {
+        res.status(200).json({message: "welcome"})
+    }
      
-      getAllPlayers = (request: express.Request, response: express.Response) => {
+      getAllPlayers = (request: Request, response: Response) => {
         try{
             playerModel.find().then(allPLayers =>{
               response.status(200).json(allPLayers);
@@ -28,7 +33,7 @@ class PlayersController {
         }        
       }
 
-      getPlayer = (request: express.Request, response: express.Response) => {
+      getPlayer = (request: Request, response: Response) => {
         try{
             playerModel.findOne({_id:request.params.id}).then(player =>{
               response.status(200).json(player);
@@ -38,7 +43,7 @@ class PlayersController {
         }        
       }
      
-      createPlayer = (request: express.Request, response: express.Response) => {
+      createPlayer = (request: Request, response: Response) => {
         try{
             const player:Player = request.body;
             const createdPlayer = new playerModel(player)
@@ -50,7 +55,7 @@ class PlayersController {
         }              
       }
 
-      updatePlayer =  (request: express.Request, response: express.Response) => {        
+      updatePlayer =  (request: Request, response: Response) => {        
         try{
             const player:Player = request.body;                       
             playerModel.findByIdAndUpdate(request.params.id,player).then((updatedPlayer)=>{

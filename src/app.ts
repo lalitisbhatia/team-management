@@ -1,14 +1,16 @@
 import express , { Application,Request,Response,Router } from "express";
 import bodyParser  from "body-parser";
 import mongoose from "mongoose";
+import BaseController from './controllers/baseController';
+import { getDBCONN } from "./utils/envHelper";
 
 require("dotenv").config(); 
 
 class App {
-    public app: express.Application;
+    public app: Application;
     public port: number;
-    // public router;
-    constructor(controllers:any,port:number){
+    
+    constructor(controllers:BaseController[],port:number){
         this.app = express();
         this.port = port;
         this.initializeMiddlewares();
@@ -20,8 +22,8 @@ class App {
         this.app.use(bodyParser.json())
     }
 
-    private initializeControllers = ((controllers: any) => {
-        controllers.forEach((controller: any) =>{
+    private initializeControllers = ((controllers: BaseController[]) => {
+        controllers.forEach((controller: BaseController) =>{
             this.app.use('/',controller.router)
         })
     })
@@ -33,8 +35,8 @@ class App {
         })
     }
 
-    private initializeDBConnection = () => {
-        mongoose.connect(`${process.env.TM_DB_CONNECTION}`);
+    private initializeDBConnection = () => {        
+        mongoose.connect(`${getDBCONN()}`);
         const db = mongoose.connection;
         db.on("error", console.error.bind(console, "connection error: "));
         db.once("open", function () {

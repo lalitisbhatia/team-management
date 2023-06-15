@@ -1,6 +1,6 @@
 const exp = require("constants")
 const request = require("supertest")
-const baseURL = "http://localhost:5500"
+const baseURL = "http://localhost:8100"
 
 describe("GET /teams", ()=>{
     const team = {
