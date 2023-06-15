@@ -1,14 +1,10 @@
-import express ,{Request,Response} from 'express'
+import {Request,Response} from 'express'
 import Team from '../interfaces/team'
-import teams from "../data/teams"
 import teamModel from "../interfaces/teamModel";
 import BaseController from './baseController';
 
 class TeamsController extends BaseController{
-    // public path = "/teams";
-    // public router = express.Router();
-    
-    // private Teams: Team[] = teams;
+   
     
     constructor() {
         super()

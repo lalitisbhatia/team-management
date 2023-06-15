@@ -1,12 +1,10 @@
-import express, {Request,Response} from 'express';
+import  {Request,Response} from 'express';
 import Player from '../interfaces/player'
 import playerModel from "../interfaces/playerModel"
 import BaseController from "./baseController"
 
 class PlayersController extends BaseController{
-    public path = '/players';
-    public router = express.Router();
-
+    
     constructor() {
         super();
         this.path = '/players';        
@@ -25,7 +23,7 @@ class PlayersController extends BaseController{
         res.status(200).json({message: "welcome"})
     }
      
-      getAllPlayers = (request: express.Request, response: express.Response) => {
+      getAllPlayers = (request: Request, response: Response) => {
         try{
             playerModel.find().then(allPLayers =>{
               response.status(200).json(allPLayers);
@@ -35,7 +33,7 @@ class PlayersController extends BaseController{
         }        
       }
 
-      getPlayer = (request: express.Request, response: express.Response) => {
+      getPlayer = (request: Request, response: Response) => {
         try{
             playerModel.findOne({_id:request.params.id}).then(player =>{
               response.status(200).json(player);
@@ -45,7 +43,7 @@ class PlayersController extends BaseController{
         }        
       }
      
-      createPlayer = (request: express.Request, response: express.Response) => {
+      createPlayer = (request: Request, response: Response) => {
         try{
             const player:Player = request.body;
             const createdPlayer = new playerModel(player)
@@ -57,7 +55,7 @@ class PlayersController extends BaseController{
         }              
       }
 
-      updatePlayer =  (request: express.Request, response: express.Response) => {        
+      updatePlayer =  (request: Request, response: Response) => {        
         try{
             const player:Player = request.body;                       
             playerModel.findByIdAndUpdate(request.params.id,player).then((updatedPlayer)=>{

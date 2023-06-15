@@ -6,9 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const teamModel_1 = __importDefault(require("../interfaces/teamModel"));
 const baseController_1 = __importDefault(require("./baseController"));
 class TeamsController extends baseController_1.default {
-    // public path = "/teams";
-    // public router = express.Router();
-    // private Teams: Team[] = teams;
     constructor() {
         super();
         this.initRoutes = () => {

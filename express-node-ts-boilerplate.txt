@@ -1,104 +1,104 @@
-/* 
---src
---public
---package.json
---tsconfig
-
-packages to install
+Node-Express-TS Boilerplate
+Packages to install
     npm install typescript express ts-node  @types/express   body-parser 
     npm install --save-dev @types/express @types/node concurrently nodemon jest 
-
-    "devDependencies": {
-        "@types/express": "^4.17.17",
-        "@types/node": "^20.1.0",
-        "concurrently": "^8.0.1",
-        "jest": "^29.5.0",
-        "nodemon": "^2.0.22",
-        "supertest": "^6.3.3",
-        "typescript": "^5.0.4"
-    },
-  "dependencies": {
-    "body-parse": "^0.1.0",
-    "body-parser": "^1.20.2",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "mongodb": "^5.5.0",
-    "mongoose": "^7.1.0"
-  },
-
-
-    
+Create files and Folders
+—\src
+—\src\controllers
+—\public
+--package.json
+—\src\server.ts
+—\src\app.ts
+—\src\controllers\baseController.ts
+Run
 -- run tsc --init
+	this creates tsc.config file
 -- update tsc.config:
     -  add " "include": ["src/*.*","src/data"]"   at the editing
     - "outDir": "./public",
     - "rootDir": "./src",
     - "target": "ES6",
+Scripts
+"dev": "concurrently \"npx tsc --watch\" \"nodemon -q public/server.js\""
 
-**************  app.ts  **************
-1. import express, {Application}
-2. define APP class:
-    //Public Props
-    -- app of type Application
-    -- port of type number 
-    -- constructor (port, controllers)
+
+Main Files
+app.ts 
+import express , { Application,Request,Response,Router } from "express";
+import bodyParser  from "body-parser";
+import mongoose from "mongoose";
+require("dotenv").config(); 
+
+class App {
+    public app: Application;
+    public port: number;
+    constructor(controllers:any,port:number){
         this.app = express();
         this.port = port;
         this.initializeMiddlewares();
         this.initializeDBConnection();
         this.initializeControllers(controllers)
-
-    -- initMiddlewares()
-        body parser
-        cors
-    -- initControllers(controllers)
-        loop thru all controllers
-        app.use('/',controller.router)
-    -- initDbConection () => {
-            mongoose.connect(`${process.env.TM_DB_CONNECTION}`);
-            const db = mongoose.connection;
-            db.on("error", console.error.bind(console, "connection error: "));
-            db.once("open", function () {
-            console.log("Connected successfully");
-            });
     }
 
-    -- listen ()
+    private initializeMiddlewares= ()=>{
+        this.app.use(bodyParser.json())
+    }
+
+    private initializeControllers = ((controllers: any) => {
+        controllers.forEach((controller: any) =>{
+            this.app.use('/',controller.router)
+        })
+    })
+    public listen = () =>{
         this.app.listen(this.port,()=> {
             console.log(`App listening on port ${this.port}`)
         })
+    }
 
-**************  server.ts  **************
-1. import app, controllers
-2. instantiate new App - 
-    a. params: ([new controller()], port number)
-    b. call app.listen()
+    private initializeDBConnection = () => {
+        mongoose.connect(`${process.env.TM_DB_CONNECTION}`);
+        const db = mongoose.connection;
+        db.on("error", console.error.bind(console, "connection error: "));
+        db.once("open", function () { console.log("Connected successfully"); });  }
+   }
+   
+export default App
+
+server.ts 
+import App from "./app"
+import BaseController from "./controllers/baseController"
+
+const app:App = new App (
+    [
+        new BaseController()
+    ],
+    5300
+)
+app.listen()
+
+baseController.ts
+import express, {Request, Response, Router } from 'express';
+
+class BaseController {
+    public router = express.Router()
+    public path = "/"
+
+    constructor(){
+        this.initRoutes();
+    }
+
+    private initRoutes () {
+        this.router.get("/",this.getHP)
+    }
+
+    private getHP(req:Request, res:Response) {
+        res.status(200).json({message: "welcome"})
+    }
+}
+export default BaseController
 
 
-**************  controllers.ts  **************
-1. import express, {Request, Response, Router}
-2. define the named controller class
-        router : Router = express.Router()
-        path : string = "/xxx"
-        data: 
-        constructor: ()
-            this.intializeRoutes();
 
-        intializeRoutes(){
-            router.get(path, (req, res) =>{
-                send data
-            })
-            router.post(path, (req, res) =>{
-                read body, 
-                save it
-                response
-            })
-            ....other verbs
-        }
-
-
-**************  interfaces.ts  **************
+interfaces
 1. define interfaces for entities
-
 */
-
